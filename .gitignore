@@ -1,0 +1,46 @@
+# Unreal Engine specific ignores
+Binaries/
+Intermediate/
+Build/
+DerivedDataCache/
+Saved/
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.sln
+*.vcxproj
+*.vcxproj.filters
+
+# macOS
+.DS_Store
+*.DS_Store
+
+# Rider
+.idea/
+
+# Build artifacts
+*.obj
+*.pdb
+*.idb
+*.lib
+*.exp
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
