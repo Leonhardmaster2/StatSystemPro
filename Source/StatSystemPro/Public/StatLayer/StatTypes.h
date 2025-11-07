@@ -28,8 +28,10 @@ enum class EStatType : uint8
 	BodyTemperature UMETA(DisplayName = "Body Temperature"),
 	Wetness UMETA(DisplayName = "Wetness"),
 
-	// Health-Related Stats
+	// Health-Related Stats (Vital Signs)
+	HeartRate UMETA(DisplayName = "Heart Rate (BPM)"),
 	BloodLevel UMETA(DisplayName = "Blood Level"),
+	BloodPressure UMETA(DisplayName = "Blood Pressure"),
 	Sanity UMETA(DisplayName = "Sanity"),
 	Infection_Level UMETA(DisplayName = "Infection Level"),
 	Toxicity UMETA(DisplayName = "Toxicity"),
@@ -59,8 +61,8 @@ enum class EStatCategory : uint8
 	/** Body Temperature, Wetness - Environmental factors */
 	Environmental UMETA(DisplayName = "Environmental Stats (Temperature, Wetness)"),
 
-	/** Blood Level, Sanity, Infection, Toxicity - Health conditions */
-	HealthConditions UMETA(DisplayName = "Health Conditions (Blood, Sanity, Infection, Toxicity)"),
+	/** Heart Rate, Blood Level, Blood Pressure, Sanity, Infection, Toxicity - Health conditions and vital signs */
+	HealthConditions UMETA(DisplayName = "Health Conditions (Heart Rate, Blood, Pressure, Sanity, Infection, Toxicity)"),
 
 	/** Strength, Dexterity, Intelligence, Endurance - RPG attributes */
 	RPGAttributes UMETA(DisplayName = "RPG Attributes (Str, Dex, Int, End)"),
