@@ -21,6 +21,13 @@
 			"LoadingPhase": "Default",
 			"PlatformAllowList": [],
 			"PlatformDenyList": []
+		},
+		{
+			"Name": "StatSystemProEditor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit",
+			"PlatformAllowList": [],
+			"PlatformDenyList": []
 		}
 	],
 	"Plugins": []
