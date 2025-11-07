@@ -23,6 +23,13 @@ StatComp->ApplyStatChange(EStatType::Health_Core, -25.0f, TEXT("Damage"), FGamep
 
 ## 🎓 Documentation
 
+- **[COMPLETE_FUNCTION_REFERENCE.md](COMPLETE_FUNCTION_REFERENCE.md)** - **📖 COMPLETE GUIDE (NEW!)**
+  - **What regeneration curves are and how to use them**
+  - Every single function with ALL inputs/outputs explained
+  - 12 advanced use cases (bleeding, temperature, boss fights, etc.)
+  - Perfect for when you're stuck and need examples
+  - **Start here if you want to understand everything!**
+
 - **[BLUEPRINT_DOCUMENTATION.md](BLUEPRINT_DOCUMENTATION.md)** - 200+ lines of Blueprint-specific docs
   - Every function explained with examples
   - Common use cases
@@ -36,6 +43,10 @@ StatComp->ApplyStatChange(EStatType::Health_Core, -25.0f, TEXT("Damage"), FGamep
   - Custom list support (select exactly which stats to check)
   - Visual examples and use cases
   - **Zero typos possible!**
+
+- **[WHATS_NEW.md](WHATS_NEW.md)** - Latest updates and improvements
+  - Summary of recent features
+  - Before/after comparisons
 
 - **[README.md](README.md)** (This file) - Technical overview and C++ reference
 
