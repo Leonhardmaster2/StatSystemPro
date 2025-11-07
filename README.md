@@ -7,13 +7,18 @@ A comprehensive, modular stat system plugin for Unreal Engine 5.6 that provides 
 ## ⚡ **LATEST IMPROVEMENTS!**
 
 **🎉 Major New Features Added:**
+- ✅ **Editor Tools Module** - Custom details panels, 20+ quick action buttons, no data tables needed! 🛠️⚡
+- ✅ **Expanded Weather System** - 13 weather types, clothing mechanics, freezing/overheating stages! ❄️🔥
+- ✅ **Clothing System** - 6 slots, wetness mechanics, wet clothing loses 70% effectiveness
+- ✅ **Temperature Mechanics** - Wind chill, shelter, advanced calculations with all factors
 - ✅ **Fixed Regeneration Curves** - Now work correctly! (Y-axis = actual regen rate, not multiplier)
 - ✅ **Global Time System** - Complete day/night cycle, seasons, 8 time-based events
 - ✅ **11 New Stat Functions** - Transfer stats, batch operations, threshold counting, comparison
 - ✅ **Project Settings** - Configure defaults in Edit → Project Settings → Plugins
-- ✅ **Enhanced Customizability** - More functions, more options, more power!
 
 **[📖 Read Full Improvements Guide →](IMPROVEMENTS.md)**
+**[🌦️ Weather System Guide →](WEATHER_SYSTEM_GUIDE.md)** ⭐ NEW!
+**[🛠️ Editor Tools Guide →](EDITOR_TOOLS_GUIDE.md)** ⭐ NEW!
 
 ## 🚀 Quick Start (30 Seconds!)
 
@@ -34,7 +39,26 @@ StatComp->ApplyStatChange(EStatType::Health_Core, -25.0f, TEXT("Damage"), FGamep
 
 ## 🎓 Documentation
 
-- **[IMPROVEMENTS.md](IMPROVEMENTS.md)** - **✨ LATEST IMPROVEMENTS (NEW!)**
+- **[EDITOR_TOOLS_GUIDE.md](EDITOR_TOOLS_GUIDE.md)** - **🛠️ EDITOR TOOLS (NEW!)** ⭐
+  - Custom details panels for all components
+  - 20+ quick action buttons (restore stats, apply weather, equip clothing, etc.)
+  - Weather presets with one-click application
+  - Clothing management (instant winter/desert gear)
+  - No data table setup required!
+  - Step-by-step control panel creation guide
+  - Fast iteration workflow
+  - **Configure everything visually!**
+
+- **[WEATHER_SYSTEM_GUIDE.md](WEATHER_SYSTEM_GUIDE.md)** - **🌦️ WEATHER SYSTEM (NEW!)** ⭐
+  - 13 weather types (Clear, Rain, Snow, Blizzard, Heatwave, etc.)
+  - Clothing system with 6 slots (wetness mechanics explained!)
+  - Temperature calculations (wind chill, shelter, clothing protection)
+  - 5 freezing stages and 5 overheating stages
+  - Weather presets for instant configuration
+  - 7 advanced use cases
+  - **Complete survival weather guide!**
+
+- **[IMPROVEMENTS.md](IMPROVEMENTS.md)** - **✨ LATEST IMPROVEMENTS**
   - Fixed regeneration curve system explained
   - Global time system complete guide
   - 11 new stat functions documented
@@ -130,19 +154,33 @@ Flexible buff/debuff framework:
 - Hypothermia, Heatstroke, Cold
 - Infection stages, Poisoned
 
-#### 4. **Environment Layer**
-Dynamic environmental interaction system:
-- **Weather Effects**: Rain, Snow, Wind
-- **Temperature System**: Ambient temperature affects body temperature
-- **Shelter System**: Outside, Partial Shelter, Full Shelter
-- **Clothing System**: Insulation values
+#### 4. **Environment Layer** ⭐ EXPANDED!
+Dynamic environmental interaction system with comprehensive weather mechanics:
+- **13 Weather Types**: Clear, Cloudy, Rain, Heavy Rain, Thunderstorm, Snow, Blizzard, Heatwave, Fog, Sandstorm, and more
+- **Advanced Clothing System**: 6 equipment slots (Head, Torso, Legs, Feet, Hands, Back)
+  - Cold/Heat insulation properties
+  - Water and wind resistance
+  - Wetness mechanics (wet clothing loses up to 70% effectiveness!)
+  - Durability system
+- **Temperature System**:
+  - Wind chill calculations
+  - Wetness penalties (up to -10°C when soaked)
+  - Clothing protection (up to +15°C with good gear)
+  - Shelter bonuses (up to +5°C)
+- **Progressive Temperature Stages**:
+  - 5 Freezing stages: Chilled → Cold → Freezing → Hypothermia → Critical
+  - 5 Overheating stages: Warm → Hot → Overheating → Heatstroke → Critical
+- **Weather Presets**: Blizzard, Heatwave, Thunderstorm, Clear (instant configuration)
 - **Radiation**: Optional radiation exposure mechanics
 
 **Advanced Features:**
-- Realistic exposure calculations
-- Wetness mechanics (getting wet in rain, drying off)
-- Temperature-based status effects
-- Integration with stat and status effect layers
+- Realistic temperature calculations considering all factors
+- Clothing gets wet in rain/snow and dries when sheltered
+- Wind chill makes cold weather feel colder
+- Progressive damage based on temperature exposure
+- Full Blueprint integration with 7 weather events
+- Multiplayer replicated
+- **[📖 Full Weather Guide →](WEATHER_SYSTEM_GUIDE.md)**
 
 #### 5. **Progression Layer**
 Complete character advancement system:

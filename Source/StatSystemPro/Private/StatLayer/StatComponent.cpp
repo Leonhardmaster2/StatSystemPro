@@ -73,14 +73,24 @@ void UStatComponent::InitializeStats()
 			switch (StatType)
 			{
 			case EStatType::BodyTemperature:
-				DefaultStat.CurrentValue = 37.0f; // Normal body temp
+				DefaultStat.CurrentValue = 37.0f; // Normal body temp (37°C / 98.6°F)
 				DefaultStat.MaxValue = 42.0f;
 				DefaultStat.BaseMaxValue = 42.0f;
 				break;
 			case EStatType::Wetness:
-				DefaultStat.CurrentValue = 0.0f;
+				DefaultStat.CurrentValue = 0.0f; // Start dry
 				DefaultStat.MaxValue = 100.0f;
 				DefaultStat.BaseMaxValue = 100.0f;
+				break;
+			case EStatType::HeartRate:
+				DefaultStat.CurrentValue = 70.0f; // Normal resting heart rate (60-80 BPM)
+				DefaultStat.MaxValue = 220.0f; // Max theoretical heart rate
+				DefaultStat.BaseMaxValue = 220.0f;
+				break;
+			case EStatType::BloodPressure:
+				DefaultStat.CurrentValue = 120.0f; // Normal systolic pressure (120 mmHg)
+				DefaultStat.MaxValue = 200.0f;
+				DefaultStat.BaseMaxValue = 200.0f;
 				break;
 			default:
 				break;
@@ -435,7 +445,9 @@ TArray<EStatType> UStatComponent::GetStatsInCategory(EStatCategory Category) con
 
 	case EStatCategory::HealthConditions:
 		CategoryStats = {
+			EStatType::HeartRate,
 			EStatType::BloodLevel,
+			EStatType::BloodPressure,
 			EStatType::Sanity,
 			EStatType::Infection_Level,
 			EStatType::Toxicity
