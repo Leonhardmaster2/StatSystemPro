@@ -232,18 +232,25 @@ void UStatComponent::UpdateStatRegeneration(float DeltaTime)
 		FStatValue& Stat = StatPair.Value;
 		float OldValue = Stat.CurrentValue;
 
-		// Apply regeneration/decay
-		if (!FMath::IsNearlyZero(Stat.RegenerationRate))
+		float RegenerationAmount = 0.0f;
+
+		// If there's a curve, use it directly (X-axis = 0-1 percentage, Y-axis = regen rate to add)
+		if (Stat.RegenerationCurve)
 		{
-			float RegenerationAmount = Stat.RegenerationRate * DeltaTime;
+			float CurrentPercentage = Stat.GetPercentage();
+			// Y-axis value IS the regeneration amount per second
+			float CurveValue = Stat.RegenerationCurve->GetFloatValue(CurrentPercentage);
+			RegenerationAmount = CurveValue * DeltaTime;
+		}
+		// Otherwise, use flat regeneration rate
+		else if (!FMath::IsNearlyZero(Stat.RegenerationRate))
+		{
+			RegenerationAmount = Stat.RegenerationRate * DeltaTime;
+		}
 
-			// If there's a curve, use it to modify the regeneration
-			if (Stat.RegenerationCurve)
-			{
-				float CurveValue = Stat.RegenerationCurve->GetFloatValue(Stat.GetPercentage());
-				RegenerationAmount *= CurveValue;
-			}
-
+		// Apply the regeneration
+		if (!FMath::IsNearlyZero(RegenerationAmount))
+		{
 			Stat.CurrentValue += RegenerationAmount;
 			Stat.Clamp();
 
@@ -559,4 +566,170 @@ void UStatComponent::RestoreStatsInList(const TArray<EStatType>& StatsToRestore,
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("StatComponent: Restored %d stats by %.2f"), StatsToRestore.Num(), Amount);
+}
+
+// ========== NEW UTILITY FUNCTIONS ==========
+
+EStatType UStatComponent::GetLowestStat(float& OutPercentage) const
+{
+	TArray<EStatType> AllStats;
+	Stats.GetKeys(AllStats);
+	return GetLowestStatInList(AllStats, OutPercentage);
+}
+
+EStatType UStatComponent::GetHighestStat(float& OutPercentage) const
+{
+	TArray<EStatType> AllStats;
+	Stats.GetKeys(AllStats);
+	return GetHighestStatInList(AllStats, OutPercentage);
+}
+
+EStatType UStatComponent::GetHighestStatInCategory(EStatCategory Category, float& OutPercentage) const
+{
+	TArray<EStatType> CategoryStats = GetStatsInCategory(Category);
+	return GetHighestStatInList(CategoryStats, OutPercentage);
+}
+
+EStatType UStatComponent::GetHighestStatInList(const TArray<EStatType>& StatsToCheck, float& OutPercentage) const
+{
+	EStatType HighestStat = EStatType::Health_Core;
+	float HighestPercentage = 0.0f;
+
+	for (EStatType StatType : StatsToCheck)
+	{
+		if (HasStat(StatType))
+		{
+			float Percentage = GetStatPercentage(StatType);
+			if (Percentage > HighestPercentage)
+			{
+				HighestPercentage = Percentage;
+				HighestStat = StatType;
+			}
+		}
+	}
+
+	OutPercentage = HighestPercentage;
+	return HighestStat;
+}
+
+void UStatComponent::TransferStatValue(EStatType FromStat, EStatType ToStat, float Amount)
+{
+	// Only server can modify stats
+	if (GetOwnerRole() != ROLE_Authority)
+	{
+		return;
+	}
+
+	if (!HasStat(FromStat) || !HasStat(ToStat))
+	{
+		return;
+	}
+
+	// Clamp amount to available value in source stat
+	float AvailableAmount = FMath::Min(Amount, GetStatValue(FromStat));
+
+	// Transfer
+	ApplyStatChange(FromStat, -AvailableAmount, TEXT("Transfer"), FGameplayTag());
+	ApplyStatChange(ToStat, AvailableAmount, TEXT("Transfer"), FGameplayTag());
+
+	UE_LOG(LogTemp, Log, TEXT("StatComponent: Transferred %.2f from %d to %d"),
+		AvailableAmount, (int32)FromStat, (int32)ToStat);
+}
+
+void UStatComponent::RestoreAllStatsToMax()
+{
+	// Only server can modify stats
+	if (GetOwnerRole() != ROLE_Authority)
+	{
+		return;
+	}
+
+	for (auto& StatPair : Stats)
+	{
+		EStatType StatType = StatPair.Key;
+		FStatValue& Stat = StatPair.Value;
+		float OldValue = Stat.CurrentValue;
+		Stat.CurrentValue = Stat.MaxValue;
+
+		if (!FMath::IsNearlyEqual(OldValue, Stat.CurrentValue))
+		{
+			BroadcastStatEvents(StatType, OldValue, Stat.CurrentValue);
+		}
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("StatComponent: Restored all stats to maximum"));
+}
+
+void UStatComponent::SetAllStatsToValue(float Value)
+{
+	// Only server can modify stats
+	if (GetOwnerRole() != ROLE_Authority)
+	{
+		return;
+	}
+
+	for (auto& StatPair : Stats)
+	{
+		SetStatValue(StatPair.Key, Value);
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("StatComponent: Set all stats to %.2f"), Value);
+}
+
+void UStatComponent::SetCategoryStatsToValue(EStatCategory Category, float Value)
+{
+	// Only server can modify stats
+	if (GetOwnerRole() != ROLE_Authority)
+	{
+		return;
+	}
+
+	TArray<EStatType> CategoryStats = GetStatsInCategory(Category);
+	for (EStatType StatType : CategoryStats)
+	{
+		SetStatValue(StatType, Value);
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("StatComponent: Set category %d stats to %.2f"), (int32)Category, Value);
+}
+
+bool UStatComponent::IsStatGreaterThan(EStatType StatA, EStatType StatB) const
+{
+	if (!HasStat(StatA) || !HasStat(StatB))
+	{
+		return false;
+	}
+
+	return GetStatPercentage(StatA) > GetStatPercentage(StatB);
+}
+
+int32 UStatComponent::GetStatsBelowThresholdCount(float Threshold) const
+{
+	int32 Count = 0;
+
+	for (const auto& StatPair : Stats)
+	{
+		if (GetStatPercentage(StatPair.Key) < Threshold)
+		{
+			Count++;
+		}
+	}
+
+	return Count;
+}
+
+int32 UStatComponent::GetCategoryStatsBelowThresholdCount(EStatCategory Category, float Threshold) const
+{
+	int32 Count = 0;
+	TArray<EStatType> CategoryStats = GetStatsInCategory(Category);
+
+	for (EStatType StatType : CategoryStats)
+	{
+		if (GetStatPercentage(StatType) < Threshold)
+		{
+			Count++;
+		}
+	}
+
+	return Count;
 }

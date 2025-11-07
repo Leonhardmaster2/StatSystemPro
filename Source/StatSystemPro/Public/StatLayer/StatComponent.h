@@ -608,6 +608,145 @@ public:
 	))
 	void RestoreStatsInList(const TArray<EStatType>& StatsToRestore, float Amount);
 
+	// ========== ADDITIONAL UTILITY FUNCTIONS ==========
+
+	/**
+	 * Get the stat with lowest percentage across ALL stats
+	 * BLUEPRINT: Find which stat globally needs attention most
+	 *
+	 * EXAMPLE: Health 90%, Hunger 25%, Stamina 80%
+	 * → Returns Hunger (25%)
+	 */
+	UFUNCTION(BlueprintPure, Category = "Stat System|Getters|Calculations", meta=(
+		DisplayName = "Get Lowest Stat (All Stats)",
+		Tooltip = "Find the stat with lowest percentage across ALL stats. Returns stat type and percentage.",
+		Keywords = "get lowest worst minimum all global"
+	))
+	EStatType GetLowestStat(float& OutPercentage) const;
+
+	/**
+	 * Get the stat with highest percentage across ALL stats
+	 * BLUEPRINT: Find which stat is in best condition
+	 */
+	UFUNCTION(BlueprintPure, Category = "Stat System|Getters|Calculations", meta=(
+		DisplayName = "Get Highest Stat (All Stats)",
+		Tooltip = "Find the stat with highest percentage across ALL stats.",
+		Keywords = "get highest best maximum all global"
+	))
+	EStatType GetHighestStat(float& OutPercentage) const;
+
+	/**
+	 * Get highest stat in a category
+	 * BLUEPRINT: Find which stat in category is healthiest
+	 */
+	UFUNCTION(BlueprintPure, Category = "Stat System|Getters|Categories", meta=(
+		DisplayName = "Get Highest Stat in Category",
+		Tooltip = "Find the stat with highest percentage in category.",
+		Keywords = "get highest best maximum category"
+	))
+	EStatType GetHighestStatInCategory(EStatCategory Category, float& OutPercentage) const;
+
+	/**
+	 * Get highest stat in custom list
+	 * BLUEPRINT: Find which stat in your list is healthiest
+	 */
+	UFUNCTION(BlueprintPure, Category = "Stat System|Getters|Custom Lists", meta=(
+		DisplayName = "Get Highest Stat in List",
+		Tooltip = "Find the stat with highest percentage in your custom list.",
+		Keywords = "get highest best maximum list custom"
+	))
+	EStatType GetHighestStatInList(const TArray<EStatType>& StatsToCheck, float& OutPercentage) const;
+
+	/**
+	 * Transfer value from one stat to another
+	 * BLUEPRINT: Useful for conversion mechanics (e.g., consume stamina to restore health)
+	 *
+	 * EXAMPLE: Transfer 30 from Stamina to Health
+	 * → Stamina -30, Health +30
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Stat System|Modification|Advanced", meta=(
+		DisplayName = "Transfer Stat Value",
+		Tooltip = "Transfer value from one stat to another. Perfect for conversion mechanics!",
+		Keywords = "transfer convert move swap exchange"
+	))
+	void TransferStatValue(EStatType FromStat, EStatType ToStat, float Amount);
+
+	/**
+	 * Restore all stats to maximum
+	 * BLUEPRINT: Full heal for everything
+	 *
+	 * PERFECT FOR:
+	 * - Respawn
+	 * - Full rest
+	 * - Cheat/debug command
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Stat System|Modification|Batch", meta=(
+		DisplayName = "Restore All Stats to Max",
+		Tooltip = "Set ALL stats to their maximum values. Full heal!",
+		Keywords = "restore all full max heal complete reset"
+	))
+	void RestoreAllStatsToMax();
+
+	/**
+	 * Set all stats to exact value
+	 * BLUEPRINT: Set all stats to same value quickly
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Stat System|Modification|Batch", meta=(
+		DisplayName = "Set All Stats to Value",
+		Tooltip = "Set ALL stats to exact value. Useful for testing/debug.",
+		Keywords = "set all stats value batch"
+	))
+	void SetAllStatsToValue(float Value);
+
+	/**
+	 * Set all stats in category to same value
+	 * BLUEPRINT: Batch set for specific category
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Stat System|Modification|Batch", meta=(
+		DisplayName = "Set Category Stats to Value",
+		Tooltip = "Set all stats in category to exact value.",
+		Keywords = "set category stats value batch"
+	))
+	void SetCategoryStatsToValue(EStatCategory Category, float Value);
+
+	/**
+	 * Compare two stats and return which is higher
+	 * BLUEPRINT: Stat comparison utility
+	 *
+	 * RETURNS: True if Stat1 > Stat2, False otherwise
+	 */
+	UFUNCTION(BlueprintPure, Category = "Stat System|Getters|Calculations", meta=(
+		DisplayName = "Compare Stats (A > B?)",
+		Tooltip = "Compare two stats. Returns true if first stat percentage > second stat percentage.",
+		Keywords = "compare greater higher bigger stat"
+	))
+	bool IsStatGreaterThan(EStatType StatA, EStatType StatB) const;
+
+	/**
+	 * Get count of stats below threshold
+	 * BLUEPRINT: How many stats are in danger?
+	 *
+	 * EXAMPLE: Threshold 0.3 (30%)
+	 * → Returns count of stats below 30%
+	 */
+	UFUNCTION(BlueprintPure, Category = "Stat System|Getters|Calculations", meta=(
+		DisplayName = "Get Count of Stats Below Threshold",
+		Tooltip = "Count how many stats are below a percentage threshold (0-1).",
+		Keywords = "count stats below threshold danger"
+	))
+	int32 GetStatsBelowThresholdCount(float Threshold) const;
+
+	/**
+	 * Get count of stats in category below threshold
+	 * BLUEPRINT: How many stats in category are in danger?
+	 */
+	UFUNCTION(BlueprintPure, Category = "Stat System|Getters|Categories", meta=(
+		DisplayName = "Get Count Below Threshold in Category",
+		Tooltip = "Count how many stats in category are below threshold.",
+		Keywords = "count category below threshold"
+	))
+	int32 GetCategoryStatsBelowThresholdCount(EStatCategory Category, float Threshold) const;
+
 private:
 	/**
 	 * Update stat regeneration/decay
