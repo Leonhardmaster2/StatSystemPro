@@ -394,3 +394,169 @@ float UStatComponent::GetAverageStatHealth() const
 
 	return TotalPercentage / Stats.Num();
 }
+
+// ========== CATEGORY-BASED FUNCTIONS ==========
+
+TArray<EStatType> UStatComponent::GetStatsInCategory(EStatCategory Category) const
+{
+	TArray<EStatType> CategoryStats;
+
+	switch (Category)
+	{
+	case EStatCategory::Core:
+		CategoryStats = {
+			EStatType::Health_Core,
+			EStatType::Stamina,
+			EStatType::Energy
+		};
+		break;
+
+	case EStatCategory::Survival:
+		CategoryStats = {
+			EStatType::Hunger,
+			EStatType::Thirst,
+			EStatType::Fatigue
+		};
+		break;
+
+	case EStatCategory::Environmental:
+		CategoryStats = {
+			EStatType::BodyTemperature,
+			EStatType::Wetness
+		};
+		break;
+
+	case EStatCategory::HealthConditions:
+		CategoryStats = {
+			EStatType::BloodLevel,
+			EStatType::Sanity,
+			EStatType::Infection_Level,
+			EStatType::Toxicity
+		};
+		break;
+
+	case EStatCategory::RPGAttributes:
+		CategoryStats = {
+			EStatType::Strength,
+			EStatType::Dexterity,
+			EStatType::Intelligence,
+			EStatType::Endurance
+		};
+		break;
+
+	case EStatCategory::All:
+		// Return all stats
+		for (int32 i = 0; i < (int32)EStatType::MAX; ++i)
+		{
+			CategoryStats.Add((EStatType)i);
+		}
+		break;
+
+	default:
+		break;
+	}
+
+	return CategoryStats;
+}
+
+bool UStatComponent::IsAnyCriticalInCategory(EStatCategory Category) const
+{
+	TArray<EStatType> CategoryStats = GetStatsInCategory(Category);
+
+	for (EStatType StatType : CategoryStats)
+	{
+		if (IsStatCritical(StatType))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool UStatComponent::IsAnyCriticalInList(const TArray<EStatType>& StatsToCheck) const
+{
+	for (EStatType StatType : StatsToCheck)
+	{
+		if (IsStatCritical(StatType))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+EStatType UStatComponent::GetLowestStatInCategory(EStatCategory Category, float& OutPercentage) const
+{
+	TArray<EStatType> CategoryStats = GetStatsInCategory(Category);
+	return GetLowestStatInList(CategoryStats, OutPercentage);
+}
+
+EStatType UStatComponent::GetLowestStatInList(const TArray<EStatType>& StatsToCheck, float& OutPercentage) const
+{
+	EStatType LowestStat = EStatType::Health_Core;
+	float LowestPercentage = 1.0f;
+
+	for (EStatType StatType : StatsToCheck)
+	{
+		if (HasStat(StatType))
+		{
+			float Percentage = GetStatPercentage(StatType);
+			if (Percentage < LowestPercentage)
+			{
+				LowestPercentage = Percentage;
+				LowestStat = StatType;
+			}
+		}
+	}
+
+	OutPercentage = LowestPercentage;
+	return LowestStat;
+}
+
+float UStatComponent::GetAverageHealthInCategory(EStatCategory Category) const
+{
+	TArray<EStatType> CategoryStats = GetStatsInCategory(Category);
+
+	if (CategoryStats.Num() == 0)
+	{
+		return 1.0f;
+	}
+
+	float TotalPercentage = 0.0f;
+	int32 ValidStats = 0;
+
+	for (EStatType StatType : CategoryStats)
+	{
+		if (HasStat(StatType))
+		{
+			TotalPercentage += GetStatPercentage(StatType);
+			ValidStats++;
+		}
+	}
+
+	return ValidStats > 0 ? TotalPercentage / ValidStats : 1.0f;
+}
+
+void UStatComponent::RestoreAllStatsInCategory(EStatCategory Category, float Amount)
+{
+	TArray<EStatType> CategoryStats = GetStatsInCategory(Category);
+	RestoreStatsInList(CategoryStats, Amount);
+}
+
+void UStatComponent::RestoreStatsInList(const TArray<EStatType>& StatsToRestore, float Amount)
+{
+	// Only server can modify stats
+	if (GetOwnerRole() != ROLE_Authority)
+	{
+		return;
+	}
+
+	for (EStatType StatType : StatsToRestore)
+	{
+		ApplyStatChange(StatType, Amount, TEXT("BatchRestore"), FGameplayTag());
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("StatComponent: Restored %d stats by %.2f"), StatsToRestore.Num(), Amount);
+}
