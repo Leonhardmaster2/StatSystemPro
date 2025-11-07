@@ -1,6 +1,36 @@
 # StatSystemPro - Professional Modular Stat System for Unreal Engine 5.6
 
+> **🎯 Simple by Default, Powerful When Needed**
+
 A comprehensive, modular stat system plugin for Unreal Engine 5.6 that provides a complete framework for managing character stats, body conditions, status effects, environmental interactions, and character progression.
+
+## 🚀 Quick Start (30 Seconds!)
+
+**For Blueprint Users:**
+1. Add "Stat Component" to your character
+2. That's it! All stats are automatically set to 100 and working!
+3. **[📘 Read the Blueprint Documentation →](BLUEPRINT_DOCUMENTATION.md)** (Complete beginner-to-advanced guide)
+
+**For C++ Users:**
+```cpp
+// Add component
+UPROPERTY(VisibleAnywhere)
+UStatComponent* StatComp;
+
+// Use it
+StatComp->ApplyStatChange(EStatType::Health_Core, -25.0f, TEXT("Damage"), FGameplayTag());
+```
+
+## 🎓 Documentation
+
+- **[BLUEPRINT_DOCUMENTATION.md](BLUEPRINT_DOCUMENTATION.md)** - 200+ lines of Blueprint-specific docs
+  - Every function explained with examples
+  - Common use cases
+  - Multiplayer setup
+  - Troubleshooting
+  - Performance tips
+
+- **[README.md](README.md)** (This file) - Technical overview and C++ reference
 
 ## Features
 
@@ -84,6 +114,58 @@ Complete character advancement system:
 - Level-based rewards
 - Gameplay tag integration
 
+## 🎯 Simple Mode vs Advanced Mode
+
+### Simple Mode (Default - Perfect for 90% of Games)
+
+**What you get:**
+- ✅ Zero configuration needed
+- ✅ All 16 stats auto-initialized to 100
+- ✅ Just add component and start coding
+- ✅ Perfect for prototyping, game jams, indie games
+
+**Setup:**
+```
+1. Add Stat Component to actor
+2. Done! (Simple Mode is ON by default)
+```
+
+### Advanced Mode (For Production Customization)
+
+**What you get:**
+- ✅ Custom stat values per stat type
+- ✅ Custom regeneration rates
+- ✅ Regeneration curves for non-linear regen
+- ✅ Data table configuration
+- ✅ Fine-grained control
+
+**Setup:**
+```
+1. Set "Use Simple Mode" = FALSE
+2. Create Data Table (Row Type: StatConfigRow)
+3. Configure each stat as needed
+4. Assign table to component
+```
+
+**You can switch between modes anytime!**
+
+## 🌐 Multiplayer Support
+
+**Full replication out of the box:**
+- ✅ Automatic stat synchronization (server → clients)
+- ✅ Server authority on all changes
+- ✅ Bandwidth optimized
+- ✅ Client prediction friendly
+- ✅ Zero extra setup required
+
+**How it works:**
+1. Server changes stats → Auto-replicates to all clients
+2. Clients can read all values in real-time
+3. Events fire on all machines
+4. UI updates automatically
+
+[See multiplayer examples in Blueprint Documentation](BLUEPRINT_DOCUMENTATION.md#multiplayer-setup)
+
 ## Architecture
 
 ### Modular Design
@@ -92,12 +174,14 @@ Each layer is completely independent and can be:
 - 🔌 Used standalone or combined
 - 🎨 Customized via data tables
 - 📊 Extended through C++ or Blueprints
+- 🌐 Fully replicated for multiplayer
 
 ### Component-Based System
 The plugin uses Unreal Engine's component system:
 - `UStatSystemProComponent` - Main integration component
 - Individual layer components for granular control
 - Automatic component linking and initialization
+- Full replication support built-in
 
 ## Installation
 
