@@ -460,12 +460,12 @@ public:
 
 	/**
 	 * Check if ANY stat is critical
-	 * BLUEPRINT: Quick check for overall critical state
+	 * BLUEPRINT: Quick check for overall critical state (checks ALL stats)
 	 */
 	UFUNCTION(BlueprintPure, Category = "Stat System|Getters|Checks", meta=(
-		DisplayName = "Is Any Stat Critical?",
-		Tooltip = "Check if ANY stat is below critical threshold",
-		Keywords = "check is any critical danger"
+		DisplayName = "Is Any Stat Critical? (All Stats)",
+		Tooltip = "Check if ANY stat is below critical threshold. Checks ALL stats.",
+		Keywords = "check is any critical danger all"
 	))
 	bool IsAnyStatCritical() const;
 
@@ -479,6 +479,134 @@ public:
 		Keywords = "get average mean overall total"
 	))
 	float GetAverageStatHealth() const;
+
+	// ========== CATEGORY-BASED OPERATIONS (NO TEXT TYPING!) ==========
+
+	/**
+	 * Get all stats in a specific category
+	 * BLUEPRINT: Select category from dropdown - easy!
+	 *
+	 * EXAMPLE: Category = Survival → Returns [Hunger, Thirst, Fatigue]
+	 */
+	UFUNCTION(BlueprintPure, Category = "Stat System|Getters|Categories", meta=(
+		DisplayName = "Get Stats in Category",
+		Tooltip = "Get all stats in a category (Core, Survival, Environmental, etc.). Returns array of stat types.",
+		Keywords = "get stats category group list array"
+	))
+	TArray<EStatType> GetStatsInCategory(EStatCategory Category) const;
+
+	/**
+	 * Check if ANY stat in a category is critical
+	 * BLUEPRINT: Select category from dropdown - no typing!
+	 *
+	 * PERFECT FOR:
+	 * - Check if any SURVIVAL stat is critical (hunger/thirst/fatigue)
+	 * - Check if any CORE stat is critical (health/stamina/energy)
+	 * - Ignore RPG stats when checking for danger
+	 *
+	 * EXAMPLE:
+	 * Category = Survival → Checks only Hunger, Thirst, Fatigue
+	 * Category = Core → Checks only Health, Stamina, Energy
+	 */
+	UFUNCTION(BlueprintPure, Category = "Stat System|Getters|Categories", meta=(
+		DisplayName = "Is Any Stat Critical in Category?",
+		Tooltip = "Check if ANY stat in selected category is below critical threshold. Perfect for checking specific groups!",
+		Keywords = "check is any critical danger category group survival core"
+	))
+	bool IsAnyCriticalInCategory(EStatCategory Category) const;
+
+	/**
+	 * Check if ANY stat in a custom list is critical
+	 * BLUEPRINT: Select exact stats you want to check - full control!
+	 *
+	 * PERFECT FOR:
+	 * - Check only Health and Blood Level (ignore everything else)
+	 * - Check Hunger and Thirst (but not Fatigue)
+	 * - Any custom combination you want!
+	 *
+	 * EXAMPLE:
+	 * Stats = [Health_Core, Blood_Level]
+	 * → Checks only those two, ignores all others
+	 */
+	UFUNCTION(BlueprintPure, Category = "Stat System|Getters|Custom Lists", meta=(
+		DisplayName = "Is Any Stat Critical in List?",
+		Tooltip = "Check if ANY stat in your custom list is critical. Full control - pick exactly which stats to check!",
+		Keywords = "check is any critical danger custom list array specific"
+	))
+	bool IsAnyCriticalInList(const TArray<EStatType>& StatsToCheck) const;
+
+	/**
+	 * Get lowest stat in a category (most damaged)
+	 * BLUEPRINT: Find which stat needs attention most
+	 *
+	 * EXAMPLE: Category = Core
+	 * Health = 90%, Stamina = 30%, Energy = 80%
+	 * → Returns Stamina (lowest)
+	 */
+	UFUNCTION(BlueprintPure, Category = "Stat System|Getters|Categories", meta=(
+		DisplayName = "Get Lowest Stat in Category",
+		Tooltip = "Find the stat with lowest percentage in category. Returns stat type and its percentage.",
+		Keywords = "get lowest worst damaged critical minimum category"
+	))
+	EStatType GetLowestStatInCategory(EStatCategory Category, float& OutPercentage) const;
+
+	/**
+	 * Get lowest stat in a custom list
+	 * BLUEPRINT: Find which stat in your list needs attention most
+	 */
+	UFUNCTION(BlueprintPure, Category = "Stat System|Getters|Custom Lists", meta=(
+		DisplayName = "Get Lowest Stat in List",
+		Tooltip = "Find the stat with lowest percentage in your custom list.",
+		Keywords = "get lowest worst damaged critical minimum list custom"
+	))
+	EStatType GetLowestStatInList(const TArray<EStatType>& StatsToCheck, float& OutPercentage) const;
+
+	/**
+	 * Get average health of stats in a category
+	 * BLUEPRINT: Overall condition of a specific category
+	 *
+	 * EXAMPLE: Category = Survival
+	 * → Returns average of Hunger, Thirst, Fatigue (0-1)
+	 */
+	UFUNCTION(BlueprintPure, Category = "Stat System|Getters|Categories", meta=(
+		DisplayName = "Get Average Health in Category",
+		Tooltip = "Get average percentage of all stats in category (0-1).",
+		Keywords = "get average mean health category group"
+	))
+	float GetAverageHealthInCategory(EStatCategory Category) const;
+
+	/**
+	 * Restore all stats in a category
+	 * BLUEPRINT: Quick category-wide restoration
+	 *
+	 * EXAMPLES:
+	 * - Rest at campfire: Restore Survival category (+50)
+	 * - Medical kit: Restore Core category (+30)
+	 * - Food: Restore Survival stats
+	 *
+	 * MULTIPLAYER: Auto-replicated!
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Stat System|Modification|Batch", meta=(
+		DisplayName = "Restore All Stats in Category",
+		Tooltip = "Add amount to all stats in category. Perfect for rest, food, medical items.",
+		Keywords = "restore heal add batch category group all"
+	))
+	void RestoreAllStatsInCategory(EStatCategory Category, float Amount);
+
+	/**
+	 * Restore specific stats from custom list
+	 * BLUEPRINT: Restore only the stats you choose
+	 *
+	 * EXAMPLE:
+	 * Water bottle: Restore [Thirst, Energy] (+40)
+	 * Bandage: Restore [Health_Core, BloodLevel] (+20)
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Stat System|Modification|Batch", meta=(
+		DisplayName = "Restore Stats in List",
+		Tooltip = "Add amount to all stats in your custom list. Perfect for items affecting multiple stats.",
+		Keywords = "restore heal add batch list custom multiple"
+	))
+	void RestoreStatsInList(const TArray<EStatType>& StatsToRestore, float Amount);
 
 private:
 	/**

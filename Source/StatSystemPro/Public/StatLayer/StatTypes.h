@@ -9,6 +9,7 @@
 
 /**
  * Enum for all available stat types
+ * BLUEPRINT: Use this enum to select stats - NO TEXT TYPING!
  */
 UENUM(BlueprintType)
 enum class EStatType : uint8
@@ -38,6 +39,34 @@ enum class EStatType : uint8
 	Dexterity UMETA(DisplayName = "Dexterity"),
 	Intelligence UMETA(DisplayName = "Intelligence"),
 	Endurance UMETA(DisplayName = "Endurance"),
+
+	MAX UMETA(Hidden)
+};
+
+/**
+ * Stat Categories for batch operations
+ * BLUEPRINT: Select a category to work with multiple related stats at once!
+ */
+UENUM(BlueprintType)
+enum class EStatCategory : uint8
+{
+	/** Health, Stamina, Energy - Core combat/gameplay stats */
+	Core UMETA(DisplayName = "Core Stats (Health, Stamina, Energy)"),
+
+	/** Hunger, Thirst, Fatigue - Survival needs */
+	Survival UMETA(DisplayName = "Survival Stats (Hunger, Thirst, Fatigue)"),
+
+	/** Body Temperature, Wetness - Environmental factors */
+	Environmental UMETA(DisplayName = "Environmental Stats (Temperature, Wetness)"),
+
+	/** Blood Level, Sanity, Infection, Toxicity - Health conditions */
+	HealthConditions UMETA(DisplayName = "Health Conditions (Blood, Sanity, Infection, Toxicity)"),
+
+	/** Strength, Dexterity, Intelligence, Endurance - RPG attributes */
+	RPGAttributes UMETA(DisplayName = "RPG Attributes (Str, Dex, Int, End)"),
+
+	/** All stats */
+	All UMETA(DisplayName = "All Stats"),
 
 	MAX UMETA(Hidden)
 };
