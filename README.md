@@ -30,6 +30,13 @@ StatComp->ApplyStatChange(EStatType::Health_Core, -25.0f, TEXT("Damage"), FGamep
   - Troubleshooting
   - Performance tips
 
+- **[ENUM_INTERFACE_GUIDE.md](ENUM_INTERFACE_GUIDE.md)** - **NO TEXT TYPING!**
+  - 100% enum-based interface (dropdown selection only)
+  - Stat categories (Core, Survival, Environmental, etc.)
+  - Custom list support (select exactly which stats to check)
+  - Visual examples and use cases
+  - **Zero typos possible!**
+
 - **[README.md](README.md)** (This file) - Technical overview and C++ reference
 
 ## Features
