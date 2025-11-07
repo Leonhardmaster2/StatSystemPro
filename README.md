@@ -7,6 +7,7 @@ A comprehensive, modular stat system plugin for Unreal Engine 5.6 that provides 
 ## ⚡ **LATEST IMPROVEMENTS!**
 
 **🎉 Major New Features Added:**
+- ✅ **Editor Tools Module** - Custom details panels, 20+ quick action buttons, no data tables needed! 🛠️⚡
 - ✅ **Expanded Weather System** - 13 weather types, clothing mechanics, freezing/overheating stages! ❄️🔥
 - ✅ **Clothing System** - 6 slots, wetness mechanics, wet clothing loses 70% effectiveness
 - ✅ **Temperature Mechanics** - Wind chill, shelter, advanced calculations with all factors
@@ -17,6 +18,7 @@ A comprehensive, modular stat system plugin for Unreal Engine 5.6 that provides 
 
 **[📖 Read Full Improvements Guide →](IMPROVEMENTS.md)**
 **[🌦️ Weather System Guide →](WEATHER_SYSTEM_GUIDE.md)** ⭐ NEW!
+**[🛠️ Editor Tools Guide →](EDITOR_TOOLS_GUIDE.md)** ⭐ NEW!
 
 ## 🚀 Quick Start (30 Seconds!)
 
@@ -36,6 +38,16 @@ StatComp->ApplyStatChange(EStatType::Health_Core, -25.0f, TEXT("Damage"), FGamep
 ```
 
 ## 🎓 Documentation
+
+- **[EDITOR_TOOLS_GUIDE.md](EDITOR_TOOLS_GUIDE.md)** - **🛠️ EDITOR TOOLS (NEW!)** ⭐
+  - Custom details panels for all components
+  - 20+ quick action buttons (restore stats, apply weather, equip clothing, etc.)
+  - Weather presets with one-click application
+  - Clothing management (instant winter/desert gear)
+  - No data table setup required!
+  - Step-by-step control panel creation guide
+  - Fast iteration workflow
+  - **Configure everything visually!**
 
 - **[WEATHER_SYSTEM_GUIDE.md](WEATHER_SYSTEM_GUIDE.md)** - **🌦️ WEATHER SYSTEM (NEW!)** ⭐
   - 13 weather types (Clear, Rain, Snow, Blizzard, Heatwave, etc.)
