@@ -4,6 +4,17 @@
 
 A comprehensive, modular stat system plugin for Unreal Engine 5.6 that provides a complete framework for managing character stats, body conditions, status effects, environmental interactions, and character progression.
 
+## ⚡ **LATEST IMPROVEMENTS!**
+
+**🎉 Major New Features Added:**
+- ✅ **Fixed Regeneration Curves** - Now work correctly! (Y-axis = actual regen rate, not multiplier)
+- ✅ **Global Time System** - Complete day/night cycle, seasons, 8 time-based events
+- ✅ **11 New Stat Functions** - Transfer stats, batch operations, threshold counting, comparison
+- ✅ **Project Settings** - Configure defaults in Edit → Project Settings → Plugins
+- ✅ **Enhanced Customizability** - More functions, more options, more power!
+
+**[📖 Read Full Improvements Guide →](IMPROVEMENTS.md)**
+
 ## 🚀 Quick Start (30 Seconds!)
 
 **For Blueprint Users:**
@@ -23,14 +34,29 @@ StatComp->ApplyStatChange(EStatType::Health_Core, -25.0f, TEXT("Damage"), FGamep
 
 ## 🎓 Documentation
 
-- **[COMPLETE_FUNCTION_REFERENCE.md](COMPLETE_FUNCTION_REFERENCE.md)** - **📖 COMPLETE GUIDE (NEW!)**
+- **[IMPROVEMENTS.md](IMPROVEMENTS.md)** - **✨ LATEST IMPROVEMENTS (NEW!)**
+  - Fixed regeneration curve system explained
+  - Global time system complete guide
+  - 11 new stat functions documented
+  - Project settings configuration
+  - Migration guide for upgrading
+  - **Read this first to see what's new!**
+
+- **[COMPLETE_FUNCTION_REFERENCE.md](COMPLETE_FUNCTION_REFERENCE.md)** - **📖 COMPLETE GUIDE**
   - **What regeneration curves are and how to use them**
   - Every single function with ALL inputs/outputs explained
   - 12 advanced use cases (bleeding, temperature, boss fights, etc.)
   - Perfect for when you're stuck and need examples
-  - **Start here if you want to understand everything!**
+  - **Complete function reference!**
 
-- **[BLUEPRINT_DOCUMENTATION.md](BLUEPRINT_DOCUMENTATION.md)** - 200+ lines of Blueprint-specific docs
+- **[ALL_LAYERS_DOCUMENTATION.md](ALL_LAYERS_DOCUMENTATION.md)** - **📚 ALL 5 LAYERS EXPLAINED**
+  - Status Effect system (what stacks are, all effect types)
+  - Body Layer system (fractures, bleeding, infections)
+  - Environment Layer (temperature, weather, radiation)
+  - Progression Layer (XP, levels, skills)
+  - How layers work together (6 integration examples)
+
+- **[BLUEPRINT_DOCUMENTATION.md](BLUEPRINT_DOCUMENTATION.md)** - Blueprint-specific docs
   - Every function explained with examples
   - Common use cases
   - Multiplayer setup
@@ -44,8 +70,8 @@ StatComp->ApplyStatChange(EStatType::Health_Core, -25.0f, TEXT("Damage"), FGamep
   - Visual examples and use cases
   - **Zero typos possible!**
 
-- **[WHATS_NEW.md](WHATS_NEW.md)** - Latest updates and improvements
-  - Summary of recent features
+- **[WHATS_NEW.md](WHATS_NEW.md)** - Earlier updates summary
+  - Summary of previous features
   - Before/after comparisons
 
 - **[README.md](README.md)** (This file) - Technical overview and C++ reference
