@@ -39,7 +39,22 @@ StatComp->ApplyStatChange(EStatType::Health_Core, -25.0f, TEXT("Damage"), FGamep
 
 ## 🎓 Documentation
 
-- **[EDITOR_TOOLS_GUIDE.md](EDITOR_TOOLS_GUIDE.md)** - **🛠️ EDITOR TOOLS (NEW!)** ⭐
+### 📖 PRIMARY DOCUMENTATION - START HERE!
+
+- **[COMPLETE_DOCUMENTATION.md](COMPLETE_DOCUMENTATION.md)** - **📚 THE ULTIMATE GUIDE (3,691 LINES!)** ⭐⭐⭐
+  - **EVERYTHING IN ONE FILE!**
+  - Complete Table of Contents (55 sections)
+  - All stat types with real-world value meanings
+  - All weather values explained (temperature, wind, shelter, etc.)
+  - Massively expanded editor tools (20+ actions, 12 presets)
+  - Complete function references for ALL components
+  - Comprehensive integration examples with code
+  - Flowcharts and system diagrams
+  - **Perfect for learning AND reference!**
+
+### 📑 Additional Specialized Guides
+
+- **[EDITOR_TOOLS_GUIDE.md](EDITOR_TOOLS_GUIDE.md)** - **🛠️ EDITOR TOOLS** ⭐
   - Custom details panels for all components
   - 20+ quick action buttons (restore stats, apply weather, equip clothing, etc.)
   - Weather presets with one-click application
