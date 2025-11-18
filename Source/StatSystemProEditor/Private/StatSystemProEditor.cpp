@@ -12,6 +12,7 @@
 #include "EditorUtilityWidgetBlueprint.h"
 
 // Include custom details customizations
+#include "Details/StatSystemProComponentDetails.h"
 #include "Details/StatComponentDetails.h"
 #include "Details/BodyComponentDetails.h"
 #include "Details/WeatherComponentDetails.h"
@@ -19,6 +20,7 @@
 #include "Details/ProgressionComponentDetails.h"
 
 // Include component headers
+#include "StatSystemProComponent.h"
 #include "StatLayer/StatComponent.h"
 #include "BodyLayer/BodyComponent.h"
 #include "WeatherSystem/WeatherComponent.h"
@@ -59,6 +61,12 @@ void FStatSystemProEditorModule::RegisterDetailsCustomizations()
 {
 	FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
 
+	// Register custom details for UNIFIED StatSystemProComponent (NEW!)
+	PropertyModule.RegisterCustomClassLayout(
+		UStatSystemProComponent::StaticClass()->GetFName(),
+		FOnGetDetailCustomizationInstance::CreateStatic(&FStatSystemProComponentDetails::MakeInstance)
+	);
+
 	// Register custom details for StatComponent
 	PropertyModule.RegisterCustomClassLayout(
 		UStatComponent::StaticClass()->GetFName(),
@@ -91,7 +99,7 @@ void FStatSystemProEditorModule::RegisterDetailsCustomizations()
 
 	PropertyModule.NotifyCustomizationModuleChanged();
 
-	UE_LOG(LogTemp, Log, TEXT("StatSystemProEditor: Details Customizations Registered"));
+	UE_LOG(LogTemp, Log, TEXT("StatSystemProEditor: Details Customizations Registered (Including Unified Component)"));
 }
 
 void FStatSystemProEditorModule::UnregisterDetailsCustomizations()
@@ -100,6 +108,7 @@ void FStatSystemProEditorModule::UnregisterDetailsCustomizations()
 	{
 		FPropertyEditorModule& PropertyModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
 
+		PropertyModule.UnregisterCustomClassLayout(UStatSystemProComponent::StaticClass()->GetFName());
 		PropertyModule.UnregisterCustomClassLayout(UStatComponent::StaticClass()->GetFName());
 		PropertyModule.UnregisterCustomClassLayout(UBodyComponent::StaticClass()->GetFName());
 		PropertyModule.UnregisterCustomClassLayout(UWeatherComponent::StaticClass()->GetFName());
